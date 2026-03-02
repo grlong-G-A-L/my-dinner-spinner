@@ -226,6 +226,53 @@ window.onerror = function(msg, src, line, col, err) {
     refreshUI();
   }
 
+  // ── Premium gating ─────────────────────────────────────────────────
+  var PREMIUM_KEY = "dinnerSpinnerPremium";
+
+  function isPremium() {
+    try { return localStorage.getItem(PREMIUM_KEY) === "true"; } catch (e) { return false; }
+  }
+
+  function setPremium(val) {
+    try { localStorage.setItem(PREMIUM_KEY, val ? "true" : "false"); } catch (e) {}
+  }
+
+  function applyPremiumState() {
+    var bar = document.getElementById("profileBar");
+    if (!isPremium()) {
+      bar.classList.add("free-mode");
+    } else {
+      bar.classList.remove("free-mode");
+    }
+    applyThemeLocks();
+  }
+
+  function applyThemeLocks() {
+    var premium = isPremium();
+    document.querySelectorAll(".theme-pill").forEach(function(btn) {
+      var theme = btn.dataset.theme;
+      if (theme === "dinner") {
+        btn.classList.remove("locked");
+        var lock = btn.querySelector(".lock-icon");
+        if (lock) lock.remove();
+        return;
+      }
+      if (premium) {
+        btn.classList.remove("locked");
+        var lock = btn.querySelector(".lock-icon");
+        if (lock) lock.remove();
+      } else {
+        btn.classList.add("locked");
+        if (!btn.querySelector(".lock-icon")) {
+          var span = document.createElement("span");
+          span.className = "lock-icon";
+          span.textContent = "\uD83D\uDD12";
+          btn.appendChild(span);
+        }
+      }
+    });
+  }
+
   // ── Active theme state ──────────────────────────────────────────────
   var activeThemeId = "dinner";
   var CATEGORIES = WHEEL_THEMES.dinner.categories;
@@ -765,6 +812,7 @@ window.onerror = function(msg, src, line, col, err) {
 
   // ── Badge checking ───────────────────────────────────────────────
   function checkBadges() {
+    if (!isPremium()) return;
     var p = activeProfile();
     var newBadges = [];
     BADGES.forEach(function(b) {
@@ -981,6 +1029,10 @@ window.onerror = function(msg, src, line, col, err) {
   document.querySelectorAll(".theme-pill").forEach(function(btn) {
     btn.addEventListener("click", function() {
       if (spinning) return;
+      if (btn.dataset.theme !== "dinner" && !isPremium()) {
+        showUpgradeModal();
+        return;
+      }
       setTheme(btn.dataset.theme);
     });
   });
@@ -1148,8 +1200,94 @@ window.onerror = function(msg, src, line, col, err) {
     profileStarsEl.textContent = p.stars;
   }
 
+  // ── Upgrade modal ──────────────────────────────────────────────
+  var upgradeOverlay = document.getElementById("upgradeModal");
+  var upgradeBtn = document.getElementById("upgradeNowBtn");
+  var upgradeLaterBtn = document.getElementById("upgradeLaterBtn");
+
+  function showUpgradeModal() {
+    upgradeOverlay.classList.add("active");
+  }
+
+  function hideUpgradeModal() {
+    upgradeOverlay.classList.remove("active");
+  }
+
+  upgradeBtn.addEventListener("click", function() {
+    setPremium(true);
+    hideUpgradeModal();
+    applyPremiumState();
+    if (!isPremium()) return;
+    spawnConfetti(document.getElementById("confetti"));
+    playFanfare();
+    showPremiumToast("Premium ON \uD83C\uDF89");
+  });
+
+  upgradeLaterBtn.addEventListener("click", function() {
+    hideUpgradeModal();
+  });
+
+  upgradeOverlay.addEventListener("click", function(e) {
+    if (e.target === upgradeOverlay) hideUpgradeModal();
+  });
+
+  function showPremiumToast(msg) {
+    badgeToastEl.innerHTML = msg;
+    badgeToastEl.classList.add("show");
+    setTimeout(function() { badgeToastEl.classList.remove("show"); }, 2200);
+  }
+
+  // ── Developer toggle (long-press title 2s) ────────────────────
+  var titleEl = document.querySelector(".title");
+  var longPressTimer = null;
+
+  titleEl.addEventListener("touchstart", function(e) {
+    longPressTimer = setTimeout(function() {
+      var now = isPremium();
+      setPremium(!now);
+      applyPremiumState();
+      if (!now) {
+        setTheme(activeThemeId);
+      } else {
+        setTheme("dinner");
+      }
+      refreshUI();
+      showPremiumToast(!now ? "Premium ON \uD83D\uDD13" : "Premium OFF \uD83D\uDD12");
+    }, 2000);
+  }, { passive: true });
+
+  titleEl.addEventListener("touchend", function() {
+    clearTimeout(longPressTimer);
+  });
+  titleEl.addEventListener("touchcancel", function() {
+    clearTimeout(longPressTimer);
+  });
+
+  titleEl.addEventListener("mousedown", function() {
+    longPressTimer = setTimeout(function() {
+      var now = isPremium();
+      setPremium(!now);
+      applyPremiumState();
+      if (!now) {
+        setTheme(activeThemeId);
+      } else {
+        setTheme("dinner");
+      }
+      refreshUI();
+      showPremiumToast(!now ? "Premium ON \uD83D\uDD13" : "Premium OFF \uD83D\uDD12");
+    }, 2000);
+  });
+
+  titleEl.addEventListener("mouseup", function() {
+    clearTimeout(longPressTimer);
+  });
+  titleEl.addEventListener("mouseleave", function() {
+    clearTimeout(longPressTimer);
+  });
+
   // ── Init ─────────────────────────────────────────────────────────
   refreshUI();
+  applyPremiumState();
   setTheme("dinner");
   resize();
 
