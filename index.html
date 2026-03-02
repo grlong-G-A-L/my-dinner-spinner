@@ -29,10 +29,18 @@
       <span class="profile-stars-group">
         <span class="star-icon">&#11088;</span>
         <span class="profile-stars" id="profileStars">0</span>
-        <button class="star-reset" id="starReset" title="Reset stars">&#x21bb;</button>
+        <button class="star-reset" id="starReset" data-i18n-title="resetStars" title="Reset stars">&#x21bb;</button>
       </span>
-      <button class="trophy-btn" id="trophyBtn" title="Badges">&#127942;</button>
-      <button class="profile-switch-btn" id="profileSwitchBtn" title="Switch player">&#128101;</button>
+      <button class="trophy-btn" id="trophyBtn" data-i18n-title="badges" title="Badges">&#127942;</button>
+      <button class="profile-switch-btn" id="profileSwitchBtn" data-i18n-title="switchPlayer" title="Switch player">&#128101;</button>
+      <div class="lang-wrapper">
+        <button class="lang-btn" id="langBtn" title="Language">&#127760;</button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button class="lang-option" data-lang="en">&#127482;&#127480; English</button>
+          <button class="lang-option" data-lang="es">&#127466;&#127480; Espa&#241;ol</button>
+          <button class="lang-option" data-lang="fr">&#127467;&#127479; Fran&#231;ais</button>
+        </div>
+      </div>
     </div>
 
     <!-- Theme selector -->
@@ -45,12 +53,12 @@
 
     <div class="wheel-row">
       <div class="wheel-col">
-        <h1 class="title">My Dinner Spinner</h1>
-        <p class="subtitle" id="subtitle">Swipe, tap, or shake to spin!</p>
+        <h1 class="title" data-i18n="appTitle">My Dinner Spinner</h1>
+        <p class="subtitle" id="subtitle" data-i18n="subtitle">Swipe, tap, or shake to spin!</p>
         <div class="wheel-container">
           <div class="arrow"></div>
           <canvas id="wheel"></canvas>
-          <button class="spin-btn" id="spinBtn">SPIN!</button>
+          <button class="spin-btn" id="spinBtn" data-i18n="spin">SPIN!</button>
         </div>
         <div class="bottom-row">
           <div class="mascot" id="mascot">
@@ -93,10 +101,10 @@
                 <div class="chef-arm right-arm"></div>
               </div>
             </div>
-            <div class="mascot-label">Chef Spinny</div>
+            <div class="mascot-label" data-i18n="chefSpinny">Chef Spinny</div>
           </div>
           <div class="mode-buttons">
-            <button class="mode-btn challenge-btn" id="challengeBtn">&#127860; Dinner Challenge</button>
+            <button class="mode-btn challenge-btn" id="challengeBtn" data-i18n="dinnerChallenge">&#127860; Dinner Challenge</button>
           </div>
         </div>
       </div>
@@ -130,11 +138,11 @@
         </div>
       </div>
       <h2 class="modal-title" id="modalTitle"></h2>
-      <p class="modal-subtitle">Tonight, try one of these:</p>
+      <p class="modal-subtitle" data-i18n="tonightTry">Tonight, try one of these:</p>
       <ul class="suggestions" id="suggestions"></ul>
       <div class="modal-actions">
-        <button class="ate-it-btn" id="ateItBtn">&#11088; I Ate It!</button>
-        <button class="spin-again-btn" id="spinAgainBtn">Spin Again!</button>
+        <button class="ate-it-btn" id="ateItBtn" data-i18n="iAteIt">&#11088; I Ate It!</button>
+        <button class="spin-again-btn" id="spinAgainBtn" data-i18n="spinAgain">Spin Again!</button>
       </div>
     </div>
   </div>
@@ -143,11 +151,11 @@
   <div class="modal-overlay" id="challengeModal">
     <div class="modal-card challenge-card">
       <div class="confetti-container" id="challengeConfetti"></div>
-      <h2 class="modal-title challenge-modal-title">&#127860; Tonight's Dinner!</h2>
+      <h2 class="modal-title challenge-modal-title" data-i18n="tonightsDinner">&#127860; Tonight's Dinner!</h2>
       <div class="meal-slots" id="mealSlots"></div>
       <div class="modal-actions">
-        <button class="ate-it-btn" id="challengeAteItBtn">&#11088; I Ate It All!</button>
-        <button class="spin-again-btn" id="challengeAgainBtn">New Challenge!</button>
+        <button class="ate-it-btn" id="challengeAteItBtn" data-i18n="iAteItAll">&#11088; I Ate It All!</button>
+        <button class="spin-again-btn" id="challengeAgainBtn" data-i18n="newChallenge">New Challenge!</button>
       </div>
     </div>
   </div>
@@ -157,26 +165,26 @@
     <div class="super-eater-card">
       <div class="confetti-container" id="superConfetti"></div>
       <div class="super-eater-badge">&#127942;</div>
-      <h2 class="super-eater-title">SUPER EATER!</h2>
-      <p class="super-eater-text">You earned 5 stars! Amazing job!</p>
-      <button class="spin-again-btn" id="superEaterClose">Awesome!</button>
+      <h2 class="super-eater-title" data-i18n="superEater">SUPER EATER!</h2>
+      <p class="super-eater-text" data-i18n="superEaterText">You earned 5 stars! Amazing job!</p>
+      <button class="spin-again-btn" id="superEaterClose" data-i18n="awesome">Awesome!</button>
     </div>
   </div>
 
   <!-- Profile picker modal -->
   <div class="modal-overlay" id="profilePicker">
     <div class="modal-card profile-picker-card">
-      <h2 class="modal-title">Who's Eating?</h2>
+      <h2 class="modal-title" data-i18n="whosEating">Who's Eating?</h2>
       <div id="profileList" class="profile-list"></div>
-      <button class="add-profile-btn" id="addProfileBtn">+ Add Player</button>
+      <button class="add-profile-btn" id="addProfileBtn" data-i18n="addPlayer">+ Add Player</button>
       <div id="profileForm" class="profile-form" style="display:none">
-        <h3 class="form-title" id="formTitle">New Player</h3>
-        <input type="text" id="profileNameInput" class="profile-name-input" placeholder="Name" maxlength="12" autocomplete="off">
-        <p class="form-label">Choose an avatar:</p>
+        <h3 class="form-title" id="formTitle" data-i18n="newPlayer">New Player</h3>
+        <input type="text" id="profileNameInput" class="profile-name-input" data-i18n-placeholder="namePlaceholder" placeholder="Name" maxlength="12" autocomplete="off">
+        <p class="form-label" data-i18n="chooseAvatar">Choose an avatar:</p>
         <div id="avatarGrid" class="avatar-grid"></div>
         <div class="form-actions">
-          <button class="ate-it-btn" id="profileFormSave">Save</button>
-          <button class="spin-again-btn" id="profileFormCancel">Cancel</button>
+          <button class="ate-it-btn" id="profileFormSave" data-i18n="save">Save</button>
+          <button class="spin-again-btn" id="profileFormCancel" data-i18n="cancel">Cancel</button>
         </div>
       </div>
     </div>
@@ -185,10 +193,10 @@
   <!-- Badge trophy case modal -->
   <div class="modal-overlay" id="badgeCase">
     <div class="modal-card badge-case-card">
-      <h2 class="modal-title">&#127942; Trophy Case</h2>
+      <h2 class="modal-title" data-i18n="trophyCase">&#127942; Trophy Case</h2>
       <div id="badgeGrid" class="badge-grid"></div>
       <div class="modal-actions">
-        <button class="spin-again-btn" id="badgeCaseClose">Close</button>
+        <button class="spin-again-btn" id="badgeCaseClose" data-i18n="close">Close</button>
       </div>
     </div>
   </div>
@@ -196,25 +204,25 @@
   <!-- Upgrade modal -->
   <div class="modal-overlay" id="upgradeModal">
     <div class="modal-card upgrade-card">
-      <h2 class="modal-title upgrade-title">&#128274; Unlock Premium!</h2>
-      <p class="upgrade-subtitle">Get even more fun for the whole family</p>
+      <h2 class="modal-title upgrade-title" data-i18n="unlockPremium">&#128274; Unlock Premium!</h2>
+      <p class="upgrade-subtitle" data-i18n="premiumSubtitle">Get even more fun for the whole family</p>
       <div class="upgrade-features">
         <div class="upgrade-feature-row">
           <span class="upgrade-feature-icon">&#127859;&#127850;&#129523;</span>
-          <span class="upgrade-feature-text">Breakfast, Snack &amp; Lunchbox wheels</span>
+          <span class="upgrade-feature-text" data-i18n="upgradeFeature1">Breakfast, Snack &amp; Lunchbox wheels</span>
         </div>
         <div class="upgrade-feature-row">
           <span class="upgrade-feature-icon">&#127942;</span>
-          <span class="upgrade-feature-text">Achievement badges &amp; Trophy Case</span>
+          <span class="upgrade-feature-text" data-i18n="upgradeFeature2">Achievement badges &amp; Trophy Case</span>
         </div>
         <div class="upgrade-feature-row">
           <span class="upgrade-feature-icon">&#128101;</span>
-          <span class="upgrade-feature-text">Multiple profiles for siblings</span>
+          <span class="upgrade-feature-text" data-i18n="upgradeFeature3">Multiple profiles for siblings</span>
         </div>
       </div>
       <div class="modal-actions upgrade-actions">
-        <button class="ate-it-btn upgrade-now-btn" id="upgradeNowBtn">&#11088; Upgrade!</button>
-        <button class="spin-again-btn upgrade-later-btn" id="upgradeLaterBtn">Maybe Later</button>
+        <button class="ate-it-btn upgrade-now-btn" id="upgradeNowBtn" data-i18n="upgrade">&#11088; Upgrade!</button>
+        <button class="spin-again-btn upgrade-later-btn" id="upgradeLaterBtn" data-i18n="maybeLater">Maybe Later</button>
       </div>
     </div>
   </div>

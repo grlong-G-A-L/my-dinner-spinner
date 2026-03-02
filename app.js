@@ -9,6 +9,347 @@ window.onerror = function(msg, src, line, col, err) {
 (() => {
   "use strict";
 
+  // ── i18n ──────────────────────────────────────────────────────────
+  var LANG_KEY = "dinnerSpinnerLang";
+  var activeLang = "en";
+
+  var STRINGS = {
+    en: {
+      appTitle: "My Dinner Spinner",
+      subtitle: "Swipe, tap, or shake to spin!",
+      spin: "SPIN!",
+      dinnerChallenge: "\uD83C\uDF74 Dinner Challenge",
+      tonightTry: "Tonight, try one of these:",
+      iAteIt: "\u2B50 I Ate It!",
+      spinAgain: "Spin Again!",
+      tonightsDinner: "\uD83C\uDF74 Tonight's Dinner!",
+      iAteItAll: "\u2B50 I Ate It All!",
+      newChallenge: "New Challenge!",
+      superEater: "SUPER EATER!",
+      superEaterText: "You earned 5 stars! Amazing job!",
+      awesome: "Awesome!",
+      whosEating: "Who's Eating?",
+      addPlayer: "+ Add Player",
+      newPlayer: "New Player",
+      editPlayer: "Edit Player",
+      namePlaceholder: "Name",
+      chooseAvatar: "Choose an avatar:",
+      save: "Save",
+      cancel: "Cancel",
+      close: "Close",
+      trophyCase: "\uD83C\uDFC6 Trophy Case",
+      unlockPremium: "\uD83D\uDD12 Unlock Premium!",
+      premiumSubtitle: "Get even more fun for the whole family",
+      upgradeFeature1: "Breakfast, Snack & Lunchbox wheels",
+      upgradeFeature2: "Achievement badges & Trophy Case",
+      upgradeFeature3: "Multiple profiles for siblings",
+      upgrade: "\u2B50 Upgrade!",
+      maybeLater: "Maybe Later",
+      resetConfirm: "Reset {name}'s stars back to 0?",
+      deleteConfirm: "Delete {name}'s profile? This can't be undone.",
+      maxProfiles: "Maximum 6 profiles!",
+      badgeUnlocked: "Badge:",
+      chefSpinny: "Chef Spinny",
+      resetStars: "Reset stars",
+      badges: "Badges",
+      switchPlayer: "Switch player",
+      dinner: "Dinner", breakfast: "Breakfast", snack: "Snack", lunchbox: "Lunchbox",
+      badge_first_spin: "First Spin", badge_first_spin_desc: "Complete your first spin",
+      badge_veggie_champ: "Veggie Champ", badge_veggie_champ_desc: "Eat 5 veggies",
+      badge_fruit_fan: "Fruit Fan", badge_fruit_fan_desc: "Eat 5 fruits",
+      badge_dairy_star: "Dairy Star", badge_dairy_star_desc: "Eat 5 dairy",
+      badge_protein_power: "Protein Power", badge_protein_power_desc: "Eat 5 proteins",
+      badge_sides_master: "Sides Master", badge_sides_master_desc: "Eat 5 sides",
+      badge_hydration_hero: "Hydration Hero", badge_hydration_hero_desc: "Drink 5 drinks",
+      badge_balanced_plate: "Balanced Plate", badge_balanced_plate_desc: "Eat from all 6 dinner categories",
+      badge_super_taster: "Super Taster", badge_super_taster_desc: "Eat 20 total items",
+      badge_dinner_legend: "Dinner Legend", badge_dinner_legend_desc: "Earn 25 stars",
+    },
+    es: {
+      appTitle: "Mi Ruleta de Cena",
+      subtitle: "\u00A1Desliza, toca o agita para girar!",
+      spin: "\u00A1GIRA!",
+      dinnerChallenge: "\uD83C\uDF74 Reto de Cena",
+      tonightTry: "Esta noche, prueba uno de estos:",
+      iAteIt: "\u2B50 \u00A1Me lo com\u00ED!",
+      spinAgain: "\u00A1Girar de nuevo!",
+      tonightsDinner: "\uD83C\uDF74 \u00A1La cena de hoy!",
+      iAteItAll: "\u2B50 \u00A1Me lo com\u00ED todo!",
+      newChallenge: "\u00A1Nuevo reto!",
+      superEater: "\u00A1SUPER COMENSAL!",
+      superEaterText: "\u00A1Ganaste 5 estrellas! \u00A1Incre\u00EDble!",
+      awesome: "\u00A1Genial!",
+      whosEating: "\u00BFQui\u00E9n come?",
+      addPlayer: "+ Agregar jugador",
+      newPlayer: "Nuevo jugador",
+      editPlayer: "Editar jugador",
+      namePlaceholder: "Nombre",
+      chooseAvatar: "Elige un avatar:",
+      save: "Guardar",
+      cancel: "Cancelar",
+      close: "Cerrar",
+      trophyCase: "\uD83C\uDFC6 Vitrina de trofeos",
+      unlockPremium: "\uD83D\uDD12 \u00A1Desbloquear Premium!",
+      premiumSubtitle: "M\u00E1s diversi\u00F3n para toda la familia",
+      upgradeFeature1: "Ruedas de Desayuno, Merienda y Lonchera",
+      upgradeFeature2: "Insignias de logros y Vitrina de trofeos",
+      upgradeFeature3: "M\u00FAltiples perfiles para hermanos",
+      upgrade: "\u2B50 \u00A1Mejorar!",
+      maybeLater: "Quiz\u00E1s luego",
+      resetConfirm: "\u00BFReiniciar las estrellas de {name} a 0?",
+      deleteConfirm: "\u00BFEliminar el perfil de {name}? No se puede deshacer.",
+      maxProfiles: "\u00A1M\u00E1ximo 6 perfiles!",
+      badgeUnlocked: "Insignia:",
+      chefSpinny: "Chef Spinny",
+      resetStars: "Reiniciar estrellas",
+      badges: "Insignias",
+      switchPlayer: "Cambiar jugador",
+      dinner: "Cena", breakfast: "Desayuno", snack: "Merienda", lunchbox: "Lonchera",
+      badge_first_spin: "Primer giro", badge_first_spin_desc: "Completa tu primer giro",
+      badge_veggie_champ: "Campe\u00F3n de verduras", badge_veggie_champ_desc: "Come 5 verduras",
+      badge_fruit_fan: "Fan de frutas", badge_fruit_fan_desc: "Come 5 frutas",
+      badge_dairy_star: "Estrella l\u00E1ctea", badge_dairy_star_desc: "Come 5 l\u00E1cteos",
+      badge_protein_power: "Poder prote\u00EDna", badge_protein_power_desc: "Come 5 prote\u00EDnas",
+      badge_sides_master: "Maestro de guarniciones", badge_sides_master_desc: "Come 5 guarniciones",
+      badge_hydration_hero: "H\u00E9roe de hidrataci\u00F3n", badge_hydration_hero_desc: "Bebe 5 bebidas",
+      badge_balanced_plate: "Plato equilibrado", badge_balanced_plate_desc: "Come de las 6 categor\u00EDas",
+      badge_super_taster: "S\u00FAper catador", badge_super_taster_desc: "Come 20 alimentos en total",
+      badge_dinner_legend: "Leyenda de la cena", badge_dinner_legend_desc: "Gana 25 estrellas",
+    },
+    fr: {
+      appTitle: "Ma Roulette du D\u00EEner",
+      subtitle: "Glisse, touche ou secoue pour tourner !",
+      spin: "TOURNE !",
+      dinnerChallenge: "\uD83C\uDF74 D\u00E9fi D\u00EEner",
+      tonightTry: "Ce soir, essaie un de ceux-ci :",
+      iAteIt: "\u2B50 J'ai mang\u00E9 !",
+      spinAgain: "Tourner encore !",
+      tonightsDinner: "\uD83C\uDF74 Le d\u00EEner de ce soir !",
+      iAteItAll: "\u2B50 J'ai tout mang\u00E9 !",
+      newChallenge: "Nouveau d\u00E9fi !",
+      superEater: "SUPER MANGEUR !",
+      superEaterText: "Tu as gagn\u00E9 5 \u00E9toiles ! Bravo !",
+      awesome: "G\u00E9nial !",
+      whosEating: "Qui mange ?",
+      addPlayer: "+ Ajouter un joueur",
+      newPlayer: "Nouveau joueur",
+      editPlayer: "\u00C9diter le joueur",
+      namePlaceholder: "Pr\u00E9nom",
+      chooseAvatar: "Choisis un avatar :",
+      save: "Enregistrer",
+      cancel: "Annuler",
+      close: "Fermer",
+      trophyCase: "\uD83C\uDFC6 Vitrine des troph\u00E9es",
+      unlockPremium: "\uD83D\uDD12 D\u00E9bloquer Premium !",
+      premiumSubtitle: "Encore plus de plaisir pour toute la famille",
+      upgradeFeature1: "Roulettes Petit-d\u00E9jeuner, Go\u00FBter et Bo\u00EEte \u00E0 lunch",
+      upgradeFeature2: "Badges de r\u00E9ussite et Vitrine des troph\u00E9es",
+      upgradeFeature3: "Plusieurs profils pour les fr\u00E8res et s\u0153urs",
+      upgrade: "\u2B50 Am\u00E9liorer !",
+      maybeLater: "Peut-\u00EAtre plus tard",
+      resetConfirm: "Remettre les \u00E9toiles de {name} \u00E0 0 ?",
+      deleteConfirm: "Supprimer le profil de {name} ? C'est irr\u00E9versible.",
+      maxProfiles: "Maximum 6 profils !",
+      badgeUnlocked: "Badge :",
+      chefSpinny: "Chef Spinny",
+      resetStars: "R\u00E9initialiser",
+      badges: "Badges",
+      switchPlayer: "Changer de joueur",
+      dinner: "D\u00EEner", breakfast: "Petit-d\u00E9j", snack: "Go\u00FBter", lunchbox: "Lunch",
+      badge_first_spin: "Premier tour", badge_first_spin_desc: "Fais ton premier tour",
+      badge_veggie_champ: "Champion des l\u00E9gumes", badge_veggie_champ_desc: "Mange 5 l\u00E9gumes",
+      badge_fruit_fan: "Fan de fruits", badge_fruit_fan_desc: "Mange 5 fruits",
+      badge_dairy_star: "\u00C9toile laiti\u00E8re", badge_dairy_star_desc: "Mange 5 produits laitiers",
+      badge_protein_power: "Pouvoir prot\u00E9ine", badge_protein_power_desc: "Mange 5 prot\u00E9ines",
+      badge_sides_master: "Ma\u00EEtre des accompagnements", badge_sides_master_desc: "Mange 5 accompagnements",
+      badge_hydration_hero: "H\u00E9ros de l'hydratation", badge_hydration_hero_desc: "Bois 5 boissons",
+      badge_balanced_plate: "Assiette \u00E9quilibr\u00E9e", badge_balanced_plate_desc: "Mange des 6 cat\u00E9gories",
+      badge_super_taster: "Super go\u00FBteur", badge_super_taster_desc: "Mange 20 aliments au total",
+      badge_dinner_legend: "L\u00E9gende du d\u00EEner", badge_dinner_legend_desc: "Gagne 25 \u00E9toiles",
+    }
+  };
+
+  var CAT_STRINGS = {
+    en: {
+      Veggies: "Veggies", Fruits: "Fruits", Dairy: "Dairy", Protein: "Protein",
+      Sides: "Sides", Drinks: "Drinks", Cereal: "Cereal", Eggs: "Eggs",
+      Fruit: "Fruit", Toast: "Toast", Pancakes: "Pancakes", Crunchy: "Crunchy",
+      Fruity: "Fruity", Cheesy: "Cheesy", Dips: "Dips", Sweet: "Sweet",
+      Frozen: "Frozen", Sandwich: "Sandwich", Veggie: "Veggie", Snack: "Snack",
+      Drink: "Drink", Treat: "Treat"
+    },
+    es: {
+      Veggies: "Verduras", Fruits: "Frutas", Dairy: "L\u00E1cteos", Protein: "Prote\u00EDna",
+      Sides: "Guarniciones", Drinks: "Bebidas", Cereal: "Cereal", Eggs: "Huevos",
+      Fruit: "Fruta", Toast: "Tostada", Pancakes: "Panqueques", Crunchy: "Crujiente",
+      Fruity: "Afrutado", Cheesy: "Quesito", Dips: "Dips", Sweet: "Dulce",
+      Frozen: "Helado", Sandwich: "S\u00E1ndwich", Veggie: "Verdura", Snack: "Botana",
+      Drink: "Bebida", Treat: "Postre"
+    },
+    fr: {
+      Veggies: "L\u00E9gumes", Fruits: "Fruits", Dairy: "Laitier", Protein: "Prot\u00E9ine",
+      Sides: "Accomp.", Drinks: "Boissons", Cereal: "C\u00E9r\u00E9ales", Eggs: "\u0152ufs",
+      Fruit: "Fruit", Toast: "Tartine", Pancakes: "Cr\u00EApes", Crunchy: "Croquant",
+      Fruity: "Fruit\u00E9", Cheesy: "Fromage", Dips: "Trempettes", Sweet: "Sucr\u00E9",
+      Frozen: "Glac\u00E9", Sandwich: "Sandwich", Veggie: "L\u00E9gume", Snack: "Collation",
+      Drink: "Boisson", Treat: "G\u00E2terie"
+    }
+  };
+
+  var FOOD_STRINGS = {
+    en: {},
+    es: {
+      Broccoli: "Br\u00F3coli", Carrots: "Zanahorias", Peas: "Guisantes", Corn: "Ma\u00EDz",
+      Spinach: "Espinaca", "Green Beans": "Ejotes", Zucchini: "Calabac\u00EDn", "Sweet Potato": "Camote",
+      Apples: "Manzanas", Bananas: "Pl\u00E1tanos", Strawberries: "Fresas", Grapes: "Uvas",
+      Watermelon: "Sand\u00EDa", Blueberries: "Ar\u00E1ndanos", Mango: "Mango", Peaches: "Duraznos",
+      Milk: "Leche", Cheese: "Queso", Yogurt: "Yogur", Butter: "Mantequilla",
+      "Ice Cream": "Helado", "Cottage Cheese": "Reques\u00F3n", "Cream Cheese": "Queso crema",
+      Chicken: "Pollo", Beef: "Res", Fish: "Pescado", Eggs: "Huevos",
+      Beans: "Frijoles", Turkey: "Pavo", Shrimp: "Camarones", Tofu: "Tofu",
+      "Mashed Potatoes": "Pur\u00E9 de papas", Rice: "Arroz", "Mac & Cheese": "Macarrones con queso",
+      Coleslaw: "Ensalada de col", Cornbread: "Pan de ma\u00EDz", "Baked Beans": "Frijoles al horno",
+      "Dinner Rolls": "Panecillos", Applesauce: "Pur\u00E9 de manzana", "Potato Salad": "Ensalada de papa",
+      "Garlic Bread": "Pan de ajo", Water: "Agua", Juice: "Jugo", Smoothie: "Batido",
+      Lemonade: "Limonada", "Hot Cocoa": "Chocolate caliente", "Sparkling Water": "Agua con gas",
+      Cheerios: "Cheerios", Granola: "Granola", Oatmeal: "Avena", "Corn Flakes": "Hojuelas de ma\u00EDz",
+      "Rice Krispies": "Rice Krispies", Muesli: "Muesli",
+      "Scrambled Eggs": "Huevos revueltos", "Fried Egg": "Huevo frito", "Hard Boiled": "Huevo duro",
+      Omelette: "Omelette", "Egg Muffin": "Muffin de huevo", "Egg & Cheese": "Huevo con queso",
+      Banana: "Pl\u00E1tano", "Apple Slices": "Rodajas de manzana", Berries: "Bayas", Melon: "Mel\u00F3n",
+      "Fruit Cup": "Copa de frutas", "Orange Slices": "Gajos de naranja",
+      "Toast & Jam": "Tostada con mermelada", "Peanut Butter Toast": "Tostada con mantequilla de man\u00ED",
+      "Cinnamon Toast": "Tostada de canela", Bagel: "Bagel", "English Muffin": "Muffin ingl\u00E9s", Waffles: "Waffles",
+      Pancakes: "Panqueques", "French Toast": "Tostada francesa", Crepes: "Crepas",
+      "Pancake Bites": "Bocaditos de panqueque", "Blueberry Pancakes": "Panqueques de ar\u00E1ndano",
+      "Orange Juice": "Jugo de naranja", "Apple Juice": "Jugo de manzana",
+      Crackers: "Galletas saladas", Pretzels: "Pretzels", Popcorn: "Palomitas",
+      "Celery Sticks": "Palitos de apio", "Carrot Sticks": "Palitos de zanahoria",
+      "Granola Bar": "Barra de granola", "Rice Cakes": "Tortitas de arroz",
+      "Dried Fruit": "Fruta seca", "Fruit Leather": "Rollito de fruta", Raisins: "Pasas",
+      "String Cheese": "Queso de hilo", "Cheese Cubes": "Cubos de queso",
+      "Cheese & Crackers": "Queso y galletas", "Cheese Puffs": "Bolitas de queso", Goldfish: "Goldfish",
+      Hummus: "Hummus", "Ranch & Veggies": "Ranch y verduras", "Apple & PB": "Manzana y mantequilla de man\u00ED",
+      Guacamole: "Guacamole", "Yogurt Dip": "Dip de yogur", Salsa: "Salsa",
+      "Trail Mix": "Mezcla de frutos secos", "Fruit Snacks": "Bocaditos de fruta",
+      "Granola Bites": "Bocaditos de granola", Pudding: "Pud\u00EDn",
+      "Frozen Grapes": "Uvas congeladas", Popsicle: "Paleta helada", "Frozen Yogurt": "Yogur helado",
+      "Ice Cream Bar": "Barra de helado", "Smoothie Pop": "Paleta de batido",
+      "PB & J": "Mantequilla de man\u00ED y mermelada", "Turkey Sandwich": "S\u00E1ndwich de pavo",
+      "Ham & Cheese": "Jam\u00F3n y queso", "Grilled Cheese": "S\u00E1ndwich de queso",
+      Wrap: "Wrap", "Bagel & Cream Cheese": "Bagel con queso crema",
+      Apple: "Manzana", Mandarin: "Mandarina",
+      "Baby Carrots": "Mini zanahorias", "Cucumber Slices": "Rodajas de pepino",
+      "Cherry Tomatoes": "Tomates cherry", Celery: "Apio", "Snap Peas": "Guisantes",
+      "Bell Pepper Strips": "Tiras de pimiento",
+      "Cheese Stick": "Palito de queso",
+      "Juice Box": "Caja de jugo",
+      Cookie: "Galleta", "Brownie Bite": "Bocadito de brownie",
+      Muffin: "Muffin", "Rice Krispie Treat": "Barra de Rice Krispie", "Pudding Cup": "Copa de pud\u00EDn"
+    },
+    fr: {
+      Broccoli: "Brocoli", Carrots: "Carottes", Peas: "Petits pois", Corn: "Ma\u00EFs",
+      Spinach: "\u00C9pinards", "Green Beans": "Haricots verts", Zucchini: "Courgette", "Sweet Potato": "Patate douce",
+      Apples: "Pommes", Bananas: "Bananes", Strawberries: "Fraises", Grapes: "Raisins",
+      Watermelon: "Past\u00E8que", Blueberries: "Myrtilles", Mango: "Mangue", Peaches: "P\u00EAches",
+      Milk: "Lait", Cheese: "Fromage", Yogurt: "Yaourt", Butter: "Beurre",
+      "Ice Cream": "Glace", "Cottage Cheese": "Fromage blanc", "Cream Cheese": "Fromage \u00E0 tartiner",
+      Chicken: "Poulet", Beef: "B\u0153uf", Fish: "Poisson", Eggs: "\u0152ufs",
+      Beans: "Haricots", Turkey: "Dinde", Shrimp: "Crevettes", Tofu: "Tofu",
+      "Mashed Potatoes": "Pur\u00E9e de pommes de terre", Rice: "Riz", "Mac & Cheese": "Macaroni au fromage",
+      Coleslaw: "Salade de chou", Cornbread: "Pain de ma\u00EFs", "Baked Beans": "Haricots au four",
+      "Dinner Rolls": "Petits pains", Applesauce: "Compote de pommes", "Potato Salad": "Salade de pommes de terre",
+      "Garlic Bread": "Pain \u00E0 l'ail", Water: "Eau", Juice: "Jus", Smoothie: "Smoothie",
+      Lemonade: "Limonade", "Hot Cocoa": "Chocolat chaud", "Sparkling Water": "Eau p\u00E9tillante",
+      Cheerios: "Cheerios", Granola: "Granola", Oatmeal: "Flocons d'avoine", "Corn Flakes": "Corn Flakes",
+      "Rice Krispies": "Rice Krispies", Muesli: "Muesli",
+      "Scrambled Eggs": "\u0152ufs brouill\u00E9s", "Fried Egg": "\u0152uf au plat", "Hard Boiled": "\u0152uf dur",
+      Omelette: "Omelette", "Egg Muffin": "Muffin aux \u0153ufs", "Egg & Cheese": "\u0152uf et fromage",
+      Banana: "Banane", "Apple Slices": "Tranches de pomme", Berries: "Baies", Melon: "Melon",
+      "Fruit Cup": "Salade de fruits", "Orange Slices": "Tranches d'orange",
+      "Toast & Jam": "Tartine et confiture", "Peanut Butter Toast": "Tartine au beurre de cacahu\u00E8te",
+      "Cinnamon Toast": "Tartine \u00E0 la cannelle", Bagel: "Bagel", "English Muffin": "Muffin anglais", Waffles: "Gaufres",
+      Pancakes: "Cr\u00EApes", "French Toast": "Pain perdu", Crepes: "Cr\u00EApes",
+      "Pancake Bites": "Mini cr\u00EApes", "Blueberry Pancakes": "Cr\u00EApes aux myrtilles",
+      "Orange Juice": "Jus d'orange", "Apple Juice": "Jus de pomme",
+      Crackers: "Crackers", Pretzels: "Bretzels", Popcorn: "Pop-corn",
+      "Celery Sticks": "B\u00E2tons de c\u00E9leri", "Carrot Sticks": "B\u00E2tons de carotte",
+      "Granola Bar": "Barre de granola", "Rice Cakes": "Galettes de riz",
+      "Dried Fruit": "Fruits secs", "Fruit Leather": "Rouleau de fruits", Raisins: "Raisins secs",
+      "String Cheese": "Fromage en ficelle", "Cheese Cubes": "D\u00E9s de fromage",
+      "Cheese & Crackers": "Fromage et crackers", "Cheese Puffs": "Souffl\u00E9s au fromage", Goldfish: "Goldfish",
+      Hummus: "Houmous", "Ranch & Veggies": "Ranch et l\u00E9gumes", "Apple & PB": "Pomme et beurre de cacahu\u00E8te",
+      Guacamole: "Guacamole", "Yogurt Dip": "Trempette au yaourt", Salsa: "Salsa",
+      "Trail Mix": "M\u00E9lange de noix", "Fruit Snacks": "Bonbons aux fruits",
+      "Granola Bites": "Bouch\u00E9es de granola", Pudding: "Pudding",
+      "Frozen Grapes": "Raisins glac\u00E9s", Popsicle: "Esquimau", "Frozen Yogurt": "Yaourt glac\u00E9",
+      "Ice Cream Bar": "B\u00E2tonnet glac\u00E9", "Smoothie Pop": "Glace au smoothie",
+      "PB & J": "Beurre de cacahu\u00E8te et confiture", "Turkey Sandwich": "Sandwich \u00E0 la dinde",
+      "Ham & Cheese": "Jambon fromage", "Grilled Cheese": "Croque-monsieur",
+      Wrap: "Wrap", "Bagel & Cream Cheese": "Bagel au fromage \u00E0 tartiner",
+      Apple: "Pomme", Mandarin: "Mandarine",
+      "Baby Carrots": "Mini carottes", "Cucumber Slices": "Tranches de concombre",
+      "Cherry Tomatoes": "Tomates cerise", Celery: "C\u00E9leri", "Snap Peas": "Pois mange-tout",
+      "Bell Pepper Strips": "Lamelles de poivron",
+      "Cheese Stick": "B\u00E2tonnet de fromage",
+      "Juice Box": "Brique de jus",
+      Cookie: "Biscuit", "Brownie Bite": "Mini brownie",
+      Muffin: "Muffin", "Rice Krispie Treat": "Barre Rice Krispie", "Pudding Cup": "Coupe de pudding"
+    }
+  };
+
+  function t(key) {
+    return (STRINGS[activeLang] && STRINGS[activeLang][key]) || STRINGS.en[key] || key;
+  }
+
+  function tc(catName) {
+    return (CAT_STRINGS[activeLang] && CAT_STRINGS[activeLang][catName]) || catName;
+  }
+
+  function tf(foodName) {
+    if (activeLang === "en") return foodName;
+    return (FOOD_STRINGS[activeLang] && FOOD_STRINGS[activeLang][foodName]) || foodName;
+  }
+
+  function loadLang() {
+    try {
+      var saved = localStorage.getItem(LANG_KEY);
+      if (saved && STRINGS[saved]) activeLang = saved;
+    } catch (_) {}
+  }
+
+  function saveLang(lang) {
+    activeLang = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch (_) {}
+  }
+
+  function applyLanguage() {
+    document.querySelectorAll("[data-i18n]").forEach(function(el) {
+      el.textContent = t(el.dataset.i18n);
+    });
+    document.querySelectorAll("[data-i18n-title]").forEach(function(el) {
+      el.title = t(el.dataset.i18nTitle);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function(el) {
+      el.placeholder = t(el.dataset.i18nPlaceholder);
+    });
+    updateThemePillLabels();
+    document.documentElement.lang = activeLang;
+  }
+
+  function updateThemePillLabels() {
+    document.querySelectorAll(".theme-pill").forEach(function(btn) {
+      var themeId = btn.dataset.theme;
+      var theme = WHEEL_THEMES[themeId];
+      if (!theme) return;
+      var lockEl = btn.querySelector(".lock-icon");
+      btn.textContent = theme.emoji + " " + t(themeId);
+      if (lockEl) btn.appendChild(lockEl);
+    });
+  }
+
+  loadLang();
+
   // ── Wheel Themes ──────────────────────────────────────────────────
   const WHEEL_THEMES = {
     dinner: {
@@ -609,7 +950,7 @@ window.onerror = function(msg, src, line, col, err) {
       ctx.shadowBlur = 4;
       ctx.shadowOffsetX = 1;
       ctx.shadowOffsetY = 1;
-      ctx.fillText(cat.name, radius * 0.43, 0);
+      ctx.fillText(tc(cat.name), radius * 0.43, 0);
       ctx.shadowBlur = 0;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 0;
@@ -722,11 +1063,11 @@ window.onerror = function(msg, src, line, col, err) {
 
   // ── Single result modal ──────────────────────────────────────────
   function showSingleResult(cat) {
-    modalTitle.textContent = cat.name;
+    modalTitle.textContent = tc(cat.name);
     suggestionsEl.innerHTML = "";
     pickRandom(cat.items, 3).forEach(function(item) {
       var li = document.createElement("li");
-      li.textContent = item;
+      li.textContent = tf(item);
       suggestionsEl.appendChild(li);
     });
     spawnConfetti(confettiEl);
@@ -776,7 +1117,7 @@ window.onerror = function(msg, src, line, col, err) {
     e.stopPropagation();
     var p = activeProfile();
     if (p.stars === 0) return;
-    if (confirm("Reset " + p.name + "'s stars back to 0?")) {
+    if (confirm(t("resetConfirm").replace("{name}", p.name))) {
       p.stars = 0;
       profileStarsEl.textContent = 0;
       saveProfile();
@@ -842,7 +1183,7 @@ window.onerror = function(msg, src, line, col, err) {
     }
     badgeToastActive = true;
     var b = badgeToastQueue.shift();
-    badgeToastEl.innerHTML = '<span class="badge-toast-emoji">' + b.emoji + '</span> Badge: <strong>' + b.name + '</strong>';
+    badgeToastEl.innerHTML = '<span class="badge-toast-emoji">' + b.emoji + '</span> ' + t("badgeUnlocked") + ' <strong>' + t("badge_" + b.id) + '</strong>';
     badgeToastEl.classList.add("show");
     playBadgeChime();
     setTimeout(function() {
@@ -861,8 +1202,8 @@ window.onerror = function(msg, src, line, col, err) {
       item.className = "badge-item" + (unlocked ? " unlocked" : "");
       item.innerHTML =
         '<div class="badge-emoji">' + (unlocked ? b.emoji : "?") + '</div>' +
-        '<div class="badge-name">' + b.name + '</div>' +
-        '<div class="badge-desc">' + b.desc + '</div>';
+        '<div class="badge-name">' + t("badge_" + b.id) + '</div>' +
+        '<div class="badge-desc">' + t("badge_" + b.id + "_desc") + '</div>';
       badgeGridEl.appendChild(item);
     });
     badgeCaseOverlay.classList.add("active");
@@ -901,11 +1242,11 @@ window.onerror = function(msg, src, line, col, err) {
     profileFormEl.style.display = "";
     if (id) {
       var p = appData.profiles[id];
-      document.getElementById("formTitle").textContent = "Edit Player";
+      document.getElementById("formTitle").textContent = t("editPlayer");
       profileNameInput.value = p.name;
       selectedAvatar = p.avatar;
     } else {
-      document.getElementById("formTitle").textContent = "New Player";
+      document.getElementById("formTitle").textContent = t("newPlayer");
       profileNameInput.value = "";
       selectedAvatar = "fox";
     }
@@ -931,7 +1272,7 @@ window.onerror = function(msg, src, line, col, err) {
       var edit = document.createElement("button");
       edit.className = "profile-card-edit";
       edit.textContent = "\u270E";
-      edit.title = "Edit " + p.name;
+      edit.title = t("editPlayer");
       edit.addEventListener("click", function(e) {
         e.stopPropagation();
         openProfileForm(id);
@@ -942,10 +1283,10 @@ window.onerror = function(msg, src, line, col, err) {
         var del = document.createElement("button");
         del.className = "profile-card-delete";
         del.textContent = "\u2715";
-        del.title = "Delete " + p.name;
+        del.title = p.name;
         del.addEventListener("click", function(e) {
           e.stopPropagation();
-          if (confirm("Delete " + p.name + "'s profile? This can't be undone.")) {
+          if (confirm(t("deleteConfirm").replace("{name}", p.name))) {
             deleteProfile(id);
             renderProfileList();
             refreshUI();
@@ -966,7 +1307,7 @@ window.onerror = function(msg, src, line, col, err) {
 
   addProfileBtn.addEventListener("click", function() {
     if (Object.keys(appData.profiles).length >= 6) {
-      alert("Maximum 6 profiles!");
+      alert(t("maxProfiles"));
       return;
     }
     openProfileForm(null);
@@ -1068,7 +1409,7 @@ window.onerror = function(msg, src, line, col, err) {
       drawFoodFaceMini(iconCanvas.getContext("2d"), 24, 24, 22, r.face);
       var info = document.createElement("div");
       info.className = "meal-slot-info";
-      info.innerHTML = '<span class="meal-slot-category">' + r.category + '</span><span class="meal-slot-food">' + r.food + '</span>';
+      info.innerHTML = '<span class="meal-slot-category">' + tc(r.category) + '</span><span class="meal-slot-food">' + tf(r.food) + '</span>';
       slot.appendChild(iconCanvas);
       slot.appendChild(info);
       mealSlotsEl.appendChild(slot);
@@ -1285,9 +1626,33 @@ window.onerror = function(msg, src, line, col, err) {
     clearTimeout(longPressTimer);
   });
 
+  // ── Language picker ─────────────────────────────────────────────
+  var langBtn = document.getElementById("langBtn");
+  var langDropdown = document.getElementById("langDropdown");
+
+  langBtn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    langDropdown.classList.toggle("open");
+  });
+
+  document.querySelectorAll(".lang-option").forEach(function(btn) {
+    btn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      saveLang(btn.dataset.lang);
+      applyLanguage();
+      drawWheel();
+      langDropdown.classList.remove("open");
+    });
+  });
+
+  document.addEventListener("click", function() {
+    langDropdown.classList.remove("open");
+  });
+
   // ── Init ─────────────────────────────────────────────────────────
   refreshUI();
   applyPremiumState();
+  applyLanguage();
   setTheme("dinner");
   resize();
 

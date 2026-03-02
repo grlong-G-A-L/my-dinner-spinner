@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dinner-spinner-v3';
+const CACHE_NAME = 'dinner-spinner-v4';
 const ASSETS = [
   './',
   './index.html',
