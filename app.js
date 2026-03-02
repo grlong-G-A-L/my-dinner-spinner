@@ -835,12 +835,34 @@ window.onerror = function(msg, src, line, col, err) {
 
   // ── Profile picker ───────────────────────────────────────────────
   var selectedAvatar = "fox";
+  var editingProfileId = null;
 
   function showProfilePicker() {
     profileFormEl.style.display = "none";
     profileListEl.style.display = "";
+    addProfileBtn.style.display = "";
+    editingProfileId = null;
     renderProfileList();
     profilePickerOverlay.classList.add("active");
+  }
+
+  function openProfileForm(id) {
+    editingProfileId = id;
+    profileListEl.style.display = "none";
+    addProfileBtn.style.display = "none";
+    profileFormEl.style.display = "";
+    if (id) {
+      var p = appData.profiles[id];
+      document.getElementById("formTitle").textContent = "Edit Player";
+      profileNameInput.value = p.name;
+      selectedAvatar = p.avatar;
+    } else {
+      document.getElementById("formTitle").textContent = "New Player";
+      profileNameInput.value = "";
+      selectedAvatar = "fox";
+    }
+    renderAvatarGrid();
+    profileNameInput.focus();
   }
 
   function renderProfileList() {
@@ -855,6 +877,19 @@ window.onerror = function(msg, src, line, col, err) {
         '<span class="profile-card-name">' + p.name + '</span>' +
         '<span class="profile-card-stars">\u2B50 ' + p.stars + '</span>';
 
+      var actions = document.createElement("span");
+      actions.className = "profile-card-actions";
+
+      var edit = document.createElement("button");
+      edit.className = "profile-card-edit";
+      edit.textContent = "\u270E";
+      edit.title = "Edit " + p.name;
+      edit.addEventListener("click", function(e) {
+        e.stopPropagation();
+        openProfileForm(id);
+      });
+      actions.appendChild(edit);
+
       if (keys.length > 1) {
         var del = document.createElement("button");
         del.className = "profile-card-delete";
@@ -868,8 +903,10 @@ window.onerror = function(msg, src, line, col, err) {
             refreshUI();
           }
         });
-        card.appendChild(del);
+        actions.appendChild(del);
       }
+
+      card.appendChild(actions);
 
       card.addEventListener("click", function() {
         switchProfile(id);
@@ -884,12 +921,7 @@ window.onerror = function(msg, src, line, col, err) {
       alert("Maximum 6 profiles!");
       return;
     }
-    profileListEl.style.display = "none";
-    profileFormEl.style.display = "";
-    profileNameInput.value = "";
-    selectedAvatar = "fox";
-    renderAvatarGrid();
-    profileNameInput.focus();
+    openProfileForm(null);
   });
 
   function renderAvatarGrid() {
@@ -910,14 +942,30 @@ window.onerror = function(msg, src, line, col, err) {
     var name = profileNameInput.value.trim();
     if (!name) { profileNameInput.focus(); return; }
     if (name.length > 12) name = name.substring(0, 12);
-    var id = createProfile(name, selectedAvatar);
-    switchProfile(id);
-    profilePickerOverlay.classList.remove("active");
+
+    if (editingProfileId) {
+      var p = appData.profiles[editingProfileId];
+      p.name = name;
+      p.avatar = selectedAvatar;
+      saveData(appData);
+      refreshUI();
+      editingProfileId = null;
+      profileFormEl.style.display = "none";
+      profileListEl.style.display = "";
+      addProfileBtn.style.display = "";
+      renderProfileList();
+    } else {
+      var id = createProfile(name, selectedAvatar);
+      switchProfile(id);
+      profilePickerOverlay.classList.remove("active");
+    }
   });
 
   profileFormCancel.addEventListener("click", function() {
+    editingProfileId = null;
     profileFormEl.style.display = "none";
     profileListEl.style.display = "";
+    addProfileBtn.style.display = "";
   });
 
   profileSwitchBtn.addEventListener("click", function(e) {
