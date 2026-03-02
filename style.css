@@ -47,35 +47,65 @@ body {
   padding: 10px 16px 16px;
 }
 
-/* ---- Star Bar ---- */
+/* ---- Profile Bar ---- */
 
-.star-bar {
-  align-self: flex-end;
+.profile-bar {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   background: linear-gradient(135deg, #FFF176, #FFD600);
   border-radius: 30px;
-  padding: 6px 16px 6px 10px;
+  padding: 5px 10px 5px 8px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.12);
   font-family: 'Fredoka One', cursive;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: #5D4037;
-  margin-bottom: 2px;
+  margin-bottom: 6px;
+  width: 100%;
+  max-width: 380px;
 }
 
-.star-icon { font-size: 1.3rem; }
+.profile-bar.pop {
+  animation: starPop 0.4s ease;
+}
+
+.profile-avatar {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.profile-name {
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+.profile-stars-group {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+}
+
+.star-icon { font-size: 1.1rem; }
+
+.profile-stars {
+  font-size: 0.95rem;
+  min-width: 16px;
+  text-align: center;
+}
 
 .star-reset {
   background: none;
   border: none;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #BF360C;
   cursor: pointer;
-  margin-left: 4px;
-  padding: 0 4px;
+  padding: 0 3px;
   line-height: 1;
-  opacity: 0.6;
+  opacity: 0.5;
   transition: opacity 0.2s, transform 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -85,14 +115,66 @@ body {
   transform: rotate(-180deg);
 }
 
-.star-bar.pop {
-  animation: starPop 0.4s ease;
+.trophy-btn,
+.profile-switch-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s;
+}
+
+.trophy-btn:active,
+.profile-switch-btn:active {
+  transform: scale(1.2);
 }
 
 @keyframes starPop {
   0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
+  50% { transform: scale(1.08); }
   100% { transform: scale(1); }
+}
+
+/* ---- Theme Bar ---- */
+
+.theme-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 0;
+}
+
+.theme-bar::-webkit-scrollbar { display: none; }
+
+.theme-pill {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.65rem;
+  padding: 5px 10px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.7);
+  color: #8D6E63;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.theme-pill.active {
+  background: #FF6D00;
+  color: #fff;
+  border-color: #BF360C;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.theme-pill:not(.active):hover {
+  background: rgba(255,255,255,0.95);
 }
 
 /* ---- Title ---- */
@@ -152,7 +234,6 @@ body {
   animation: mascotCheer 0.3s ease 3;
 }
 
-/* Toque (chef hat) */
 .toque {
   position: relative;
   width: 52px;
@@ -168,26 +249,9 @@ body {
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
-.toque-puff.p1 {
-  width: 24px;
-  height: 24px;
-  left: 2px;
-  top: 0;
-}
-
-.toque-puff.p2 {
-  width: 28px;
-  height: 26px;
-  left: 12px;
-  top: -6px;
-}
-
-.toque-puff.p3 {
-  width: 24px;
-  height: 24px;
-  right: 2px;
-  top: 0;
-}
+.toque-puff.p1 { width: 24px; height: 24px; left: 2px; top: 0; }
+.toque-puff.p2 { width: 28px; height: 26px; left: 12px; top: -6px; }
+.toque-puff.p3 { width: 24px; height: 24px; right: 2px; top: 0; }
 
 .toque-band {
   position: absolute;
@@ -200,7 +264,6 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,0.06);
 }
 
-/* Head */
 .chef-head {
   position: relative;
   width: 50px;
@@ -215,12 +278,7 @@ body {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Eyebrows */
-.chef-brows {
-  display: flex;
-  gap: 16px;
-  margin-top: 8px;
-}
+.chef-brows { display: flex; gap: 16px; margin-top: 8px; }
 
 .chef-brow {
   display: block;
@@ -236,12 +294,7 @@ body {
 .mascot.cheering .chef-brow.left { transform: rotate(-15deg) translateY(-3px); }
 .mascot.cheering .chef-brow.right { transform: rotate(15deg) translateY(-3px); }
 
-/* Eyes */
-.chef-eyes {
-  display: flex;
-  gap: 12px;
-  margin-top: 2px;
-}
+.chef-eyes { display: flex; gap: 12px; margin-top: 2px; }
 
 .chef-eye {
   position: relative;
@@ -286,13 +339,8 @@ body {
 .mascot.excited .chef-pupil { display: none; }
 .mascot.excited .chef-shine { display: none; }
 
-.mascot.cheering .chef-pupil {
-  width: 5px;
-  height: 5px;
-  bottom: 2px;
-}
+.mascot.cheering .chef-pupil { width: 5px; height: 5px; bottom: 2px; }
 
-/* Nose */
 .chef-nose {
   width: 7px;
   height: 5px;
@@ -301,7 +349,6 @@ body {
   margin-top: 1px;
 }
 
-/* Cheeks */
 .chef-cheeks {
   position: absolute;
   width: 100%;
@@ -322,11 +369,8 @@ body {
 }
 
 .mascot.excited .chef-cheek,
-.mascot.cheering .chef-cheek {
-  opacity: 0.7;
-}
+.mascot.cheering .chef-cheek { opacity: 0.7; }
 
-/* Mouth */
 .chef-mouth {
   position: relative;
   width: 14px;
@@ -351,22 +395,11 @@ body {
   transition: opacity 0.2s;
 }
 
-.mascot.excited .chef-mouth {
-  width: 16px;
-  height: 9px;
-}
-
+.mascot.excited .chef-mouth { width: 16px; height: 9px; }
 .mascot.excited .chef-tongue,
-.mascot.cheering .chef-tongue {
-  opacity: 1;
-}
+.mascot.cheering .chef-tongue { opacity: 1; }
+.mascot.cheering .chef-mouth { width: 18px; height: 10px; }
 
-.mascot.cheering .chef-mouth {
-  width: 18px;
-  height: 10px;
-}
-
-/* Body */
 .chef-body {
   position: relative;
   width: 40px;
@@ -413,15 +446,8 @@ body {
   transition: transform 0.3s;
 }
 
-.chef-arm.left-arm {
-  left: -7px;
-  transform: rotate(8deg);
-}
-
-.chef-arm.right-arm {
-  right: -7px;
-  transform: rotate(-8deg);
-}
+.chef-arm.left-arm { left: -7px; transform: rotate(8deg); }
+.chef-arm.right-arm { right: -7px; transform: rotate(-8deg); }
 
 .mascot.excited .chef-arm.left-arm { transform: rotate(-15deg) translateY(-3px); }
 .mascot.excited .chef-arm.right-arm { transform: rotate(15deg) translateY(-3px); }
@@ -438,7 +464,6 @@ body {
   50% { transform: rotate(30deg) translateY(-5px); }
 }
 
-/* Label */
 .mascot-label {
   font-family: 'Fredoka One', cursive;
   font-size: 0.6rem;
@@ -459,13 +484,13 @@ body {
   100% { transform: rotate(0); }
 }
 
-/* ---- Wheel Column (wheel + challenge button) ---- */
+/* ---- Wheel Column ---- */
 
 .wheel-col {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 22px;
+  padding-top: 10px;
 }
 
 /* ---- Wheel ---- */
@@ -504,9 +529,7 @@ body {
   transition: transform 0.1s;
 }
 
-.arrow.tick {
-  transform: translateX(-50%) scaleY(0.82);
-}
+.arrow.tick { transform: translateX(-50%) scaleY(0.82); }
 
 /* ---- Spin Button ---- */
 
@@ -537,12 +560,9 @@ body {
     0 4px 10px rgba(0,0,0,0.15);
 }
 
-.spin-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+.spin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-/* ---- Bottom Row (mascot + challenge button) ---- */
+/* ---- Bottom Row ---- */
 
 .bottom-row {
   display: flex;
@@ -554,10 +574,7 @@ body {
 
 /* ---- Mode Buttons ---- */
 
-.mode-buttons {
-  display: flex;
-  gap: 10px;
-}
+.mode-buttons { display: flex; gap: 10px; }
 
 .mode-btn {
   font-family: 'Fredoka One', cursive;
@@ -581,19 +598,13 @@ body {
   box-shadow: 0 1px 0 #4527A0, 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.challenge-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+.challenge-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* ---- Modal ---- */
 
 .modal-overlay {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
+  left: 0; right: 0; bottom: 0; top: 0;
   background: rgba(0,0,0,0.5);
   z-index: 100;
   opacity: 0;
@@ -601,10 +612,7 @@ body {
   transition: opacity 0.3s;
 }
 
-.modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
 
 .modal-card {
   position: absolute;
@@ -621,9 +629,7 @@ body {
   overflow: hidden;
 }
 
-.modal-overlay.active .modal-card {
-  transform: translate(-50%, 0);
-}
+.modal-overlay.active .modal-card { transform: translate(-50%, 0); }
 
 .modal-emoji {
   font-size: 3rem;
@@ -635,11 +641,7 @@ body {
 
 /* ---- Mini Chef (modal) ---- */
 
-.mini-chef {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+.mini-chef { display: flex; flex-direction: column; align-items: center; }
 
 .mini-toque {
   position: relative;
@@ -681,10 +683,7 @@ body {
   margin-bottom: 2px;
 }
 
-.challenge-modal-title {
-  font-size: 1.35rem;
-  margin-bottom: 10px;
-}
+.challenge-modal-title { font-size: 1.35rem; margin-bottom: 10px; }
 
 .modal-subtitle {
   font-size: 0.9rem;
@@ -761,7 +760,7 @@ body {
   box-shadow: 0 1px 0 var(--spin-btn-shadow), 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* ---- Meal Slots (Dinner Challenge) ---- */
+/* ---- Meal Slots ---- */
 
 .meal-slots {
   display: flex;
@@ -786,15 +785,9 @@ body {
 .meal-slot:nth-child(2) { animation-delay: 0.4s; }
 .meal-slot:nth-child(3) { animation-delay: 0.6s; }
 
-.meal-slot-icon {
-  font-size: 1.8rem;
-  flex-shrink: 0;
-}
+.meal-slot-icon { font-size: 1.8rem; flex-shrink: 0; }
 
-.meal-slot-info {
-  display: flex;
-  flex-direction: column;
-}
+.meal-slot-info { display: flex; flex-direction: column; }
 
 .meal-slot-category {
   font-family: 'Fredoka One', cursive;
@@ -802,11 +795,7 @@ body {
   color: var(--modal-title);
 }
 
-.meal-slot-food {
-  font-weight: 800;
-  font-size: 1.05rem;
-  color: #5D4037;
-}
+.meal-slot-food { font-weight: 800; font-size: 1.05rem; color: #5D4037; }
 
 /* ---- Super Eater Overlay ---- */
 
@@ -823,10 +812,7 @@ body {
   transition: opacity 0.3s;
 }
 
-.super-eater-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
+.super-eater-overlay.active { opacity: 1; pointer-events: auto; }
 
 .super-eater-card {
   position: relative;
@@ -841,14 +827,9 @@ body {
   overflow: hidden;
 }
 
-.super-eater-overlay.active .super-eater-card {
-  transform: scale(1);
-}
+.super-eater-overlay.active .super-eater-card { transform: scale(1); }
 
-.super-eater-badge {
-  font-size: 4rem;
-  animation: popIn 0.6s 0.2s both;
-}
+.super-eater-badge { font-size: 4rem; animation: popIn 0.6s 0.2s both; }
 
 .super-eater-title {
   font-family: 'Fredoka One', cursive;
@@ -864,6 +845,243 @@ body {
   color: #6D4C41;
   margin-bottom: 20px;
 }
+
+/* ---- Profile Picker ---- */
+
+.profile-picker-card {
+  padding-bottom: 28px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.profile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--suggestion-bg);
+  border: 2px solid var(--suggestion-border);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.12s, border-color 0.2s;
+  position: relative;
+}
+
+.profile-card.active { border-color: #FF6D00; }
+
+.profile-card:active { transform: scale(0.97); }
+
+.profile-card-avatar { font-size: 1.6rem; }
+
+.profile-card-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1rem;
+  color: #5D4037;
+  flex: 1;
+}
+
+.profile-card-stars {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem;
+  color: #8D6E63;
+}
+
+.profile-card-delete {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: #BDBDBD;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.profile-card-delete:hover,
+.profile-card-delete:active { color: #E53935; }
+
+.add-profile-btn {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.9rem;
+  padding: 10px 24px;
+  border: 2px dashed #BDBDBD;
+  border-radius: 16px;
+  background: transparent;
+  color: #8D6E63;
+  cursor: pointer;
+  width: 100%;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.add-profile-btn:hover,
+.add-profile-btn:active {
+  border-color: #FF6D00;
+  background: rgba(255,109,0,0.05);
+}
+
+/* ---- Profile Form ---- */
+
+.profile-form { text-align: center; }
+
+.form-title {
+  font-family: 'Fredoka One', cursive;
+  font-size: 1.1rem;
+  color: #5D4037;
+  margin-bottom: 12px;
+}
+
+.profile-name-input {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 10px 16px;
+  border: 2px solid var(--suggestion-border);
+  border-radius: 14px;
+  background: var(--suggestion-bg);
+  color: #5D4037;
+  width: 100%;
+  max-width: 220px;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.profile-name-input:focus { border-color: #FF6D00; }
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #8D6E63;
+  margin: 12px 0 8px;
+}
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  max-width: 220px;
+  margin: 0 auto 16px;
+}
+
+.avatar-btn {
+  font-size: 1.6rem;
+  padding: 8px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--suggestion-bg);
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.avatar-btn.selected {
+  border-color: #FF6D00;
+  background: #FFF3D6;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(255,109,0,0.25);
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+/* ---- Badge Trophy Case ---- */
+
+.badge-case-card {
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 14px 0 18px;
+}
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 6px;
+  border-radius: 16px;
+  background: #E0E0E0;
+  transition: all 0.3s;
+}
+
+.badge-item.unlocked {
+  background: linear-gradient(135deg, #FFF8E1, #FFF176);
+  box-shadow: 0 2px 8px rgba(255,214,0,0.3);
+}
+
+.badge-emoji {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.badge-item:not(.unlocked) .badge-emoji {
+  filter: grayscale(1);
+  opacity: 0.4;
+  font-size: 1.4rem;
+}
+
+.badge-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.6rem;
+  color: #5D4037;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.badge-item:not(.unlocked) .badge-name { color: #9E9E9E; }
+
+.badge-desc {
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: #8D6E63;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.badge-item:not(.unlocked) .badge-desc { color: #BDBDBD; }
+
+/* ---- Badge Toast ---- */
+
+.badge-toast {
+  position: fixed;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #FFF176, #FFD600);
+  color: #5D4037;
+  font-family: 'Fredoka One', cursive;
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 300;
+  transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.badge-toast.show { top: 16px; }
+
+.badge-toast-emoji { margin-right: 4px; }
 
 /* ---- Confetti ---- */
 
@@ -884,14 +1102,8 @@ body {
 }
 
 @keyframes confettiFall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(520px) rotate(720deg);
-    opacity: 0;
-  }
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(520px) rotate(720deg); opacity: 0; }
 }
 
 /* ---- Shared Keyframes ---- */
@@ -903,14 +1115,8 @@ body {
 }
 
 @keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* ---- Responsive ---- */
@@ -925,6 +1131,8 @@ body {
     height: min(65vw, 280px);
   }
   .bottom-row { gap: 10px; }
+  .profile-bar { padding: 4px 8px 4px 6px; }
+  .theme-pill { font-size: 0.6rem; padding: 4px 8px; }
 }
 
 @media (max-height: 620px) {

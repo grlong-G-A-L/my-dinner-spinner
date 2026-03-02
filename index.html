@@ -18,12 +18,29 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Badge unlock toast -->
+  <div class="badge-toast" id="badgeToast"></div>
+
   <div class="app">
-    <!-- Star counter -->
-    <div class="star-bar" id="starBar">
-      <span class="star-icon">&#11088;</span>
-      <span class="star-count" id="starCount">0</span>
-      <button class="star-reset" id="starReset" title="Reset stars">&#x21bb;</button>
+    <!-- Profile bar -->
+    <div class="profile-bar" id="profileBar">
+      <span class="profile-avatar" id="profileAvatar"></span>
+      <span class="profile-name" id="profileName"></span>
+      <span class="profile-stars-group">
+        <span class="star-icon">&#11088;</span>
+        <span class="profile-stars" id="profileStars">0</span>
+        <button class="star-reset" id="starReset" title="Reset stars">&#x21bb;</button>
+      </span>
+      <button class="trophy-btn" id="trophyBtn" title="Badges">&#127942;</button>
+      <button class="profile-switch-btn" id="profileSwitchBtn" title="Switch player">&#128101;</button>
+    </div>
+
+    <!-- Theme selector -->
+    <div class="theme-bar">
+      <button class="theme-pill active" data-theme="dinner">&#127869;&#65039; Dinner</button>
+      <button class="theme-pill" data-theme="breakfast">&#127859; Breakfast</button>
+      <button class="theme-pill" data-theme="snack">&#127850; Snack</button>
+      <button class="theme-pill" data-theme="lunchbox">&#129523; Lunchbox</button>
     </div>
 
     <div class="wheel-row">
@@ -143,6 +160,36 @@
       <h2 class="super-eater-title">SUPER EATER!</h2>
       <p class="super-eater-text">You earned 5 stars! Amazing job!</p>
       <button class="spin-again-btn" id="superEaterClose">Awesome!</button>
+    </div>
+  </div>
+
+  <!-- Profile picker modal -->
+  <div class="modal-overlay" id="profilePicker">
+    <div class="modal-card profile-picker-card">
+      <h2 class="modal-title">Who's Eating?</h2>
+      <div id="profileList" class="profile-list"></div>
+      <button class="add-profile-btn" id="addProfileBtn">+ Add Player</button>
+      <div id="profileForm" class="profile-form" style="display:none">
+        <h3 class="form-title">New Player</h3>
+        <input type="text" id="profileNameInput" class="profile-name-input" placeholder="Name" maxlength="12" autocomplete="off">
+        <p class="form-label">Choose an avatar:</p>
+        <div id="avatarGrid" class="avatar-grid"></div>
+        <div class="form-actions">
+          <button class="ate-it-btn" id="profileFormSave">Save</button>
+          <button class="spin-again-btn" id="profileFormCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Badge trophy case modal -->
+  <div class="modal-overlay" id="badgeCase">
+    <div class="modal-card badge-case-card">
+      <h2 class="modal-title">&#127942; Trophy Case</h2>
+      <div id="badgeGrid" class="badge-grid"></div>
+      <div class="modal-actions">
+        <button class="spin-again-btn" id="badgeCaseClose">Close</button>
+      </div>
     </div>
   </div>
 
