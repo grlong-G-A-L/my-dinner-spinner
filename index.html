@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#FFD93D">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="A fun spinning wheel game that helps kids eat a balanced meal!">
+  <title>My Dinner Spinner</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Star counter -->
+    <div class="star-bar" id="starBar">
+      <span class="star-icon">&#11088;</span>
+      <span class="star-count" id="starCount">0</span>
+    </div>
+
+    <div class="wheel-row">
+      <!-- Mascot (left side) -->
+      <div class="mascot" id="mascot">
+        <div class="mascot-chef">
+          <!-- Hat (toque) -->
+          <div class="toque">
+            <div class="toque-puff p1"></div>
+            <div class="toque-puff p2"></div>
+            <div class="toque-puff p3"></div>
+            <div class="toque-band"></div>
+          </div>
+          <!-- Head -->
+          <div class="chef-head">
+            <!-- Eyebrows -->
+            <div class="chef-brows">
+              <span class="chef-brow left"></span>
+              <span class="chef-brow right"></span>
+            </div>
+            <!-- Eyes -->
+            <div class="chef-eyes">
+              <span class="chef-eye left">
+                <span class="chef-pupil"></span>
+                <span class="chef-shine"></span>
+              </span>
+              <span class="chef-eye right">
+                <span class="chef-pupil"></span>
+                <span class="chef-shine"></span>
+              </span>
+            </div>
+            <!-- Nose -->
+            <div class="chef-nose"></div>
+            <!-- Cheeks -->
+            <div class="chef-cheeks">
+              <span class="chef-cheek left"></span>
+              <span class="chef-cheek right"></span>
+            </div>
+            <!-- Mouth -->
+            <div class="chef-mouth" id="mascotMouth">
+              <div class="chef-tongue"></div>
+            </div>
+          </div>
+          <!-- Body -->
+          <div class="chef-body">
+            <div class="chef-collar"></div>
+            <div class="chef-button b1"></div>
+            <div class="chef-button b2"></div>
+            <div class="chef-arm left-arm"></div>
+            <div class="chef-arm right-arm"></div>
+          </div>
+        </div>
+        <div class="mascot-label">Chef Spinny</div>
+      </div>
+
+      <!-- Wheel + button stacked -->
+      <div class="wheel-col">
+        <h1 class="title">My Dinner Spinner</h1>
+        <p class="subtitle" id="subtitle">Swipe, tap, or shake to spin!</p>
+        <div class="wheel-container">
+          <div class="arrow"></div>
+          <canvas id="wheel"></canvas>
+          <button class="spin-btn" id="spinBtn">SPIN!</button>
+        </div>
+        <div class="mode-buttons">
+          <button class="mode-btn challenge-btn" id="challengeBtn">&#127860; Dinner Challenge</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Single-spin result modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-card">
+      <div class="confetti-container" id="confetti"></div>
+      <div class="modal-emoji" id="modalEmoji">
+        <div class="mini-chef">
+          <div class="mini-toque">
+            <div class="toque-puff p1"></div>
+            <div class="toque-puff p2"></div>
+            <div class="toque-puff p3"></div>
+            <div class="toque-band"></div>
+          </div>
+          <div class="mini-chef-head">
+            <div class="chef-eyes">
+              <span class="chef-eye left"><span class="chef-pupil"></span><span class="chef-shine"></span></span>
+              <span class="chef-eye right"><span class="chef-pupil"></span><span class="chef-shine"></span></span>
+            </div>
+            <div class="chef-nose"></div>
+            <div class="mini-chef-cheeks">
+              <span class="chef-cheek left"></span>
+              <span class="chef-cheek right"></span>
+            </div>
+            <div class="chef-mouth"><div class="chef-tongue"></div></div>
+          </div>
+        </div>
+      </div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <p class="modal-subtitle">Tonight, try one of these:</p>
+      <ul class="suggestions" id="suggestions"></ul>
+      <div class="modal-actions">
+        <button class="ate-it-btn" id="ateItBtn">&#11088; I Ate It!</button>
+        <button class="spin-again-btn" id="spinAgainBtn">Spin Again!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dinner Challenge result modal -->
+  <div class="modal-overlay" id="challengeModal">
+    <div class="modal-card challenge-card">
+      <div class="confetti-container" id="challengeConfetti"></div>
+      <h2 class="modal-title challenge-modal-title">&#127860; Tonight's Dinner!</h2>
+      <div class="meal-slots" id="mealSlots"></div>
+      <div class="modal-actions">
+        <button class="ate-it-btn" id="challengeAteItBtn">&#11088; I Ate It All!</button>
+        <button class="spin-again-btn" id="challengeAgainBtn">New Challenge!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Super Eater celebration overlay -->
+  <div class="super-eater-overlay" id="superEater">
+    <div class="super-eater-card">
+      <div class="confetti-container" id="superConfetti"></div>
+      <div class="super-eater-badge">&#127942;</div>
+      <h2 class="super-eater-title">SUPER EATER!</h2>
+      <p class="super-eater-text">You earned 5 stars! Amazing job!</p>
+      <button class="spin-again-btn" id="superEaterClose">Awesome!</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registered:', reg.scope))
+          .catch(err => console.log('SW registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
