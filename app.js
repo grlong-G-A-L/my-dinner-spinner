@@ -43,12 +43,12 @@ window.onerror = function(msg, src, line, col, err) {
       items: ["Chicken", "Beef", "Fish", "Eggs", "Beans", "Turkey", "Shrimp", "Tofu"],
     },
     {
-      name: "Grains",
-      emoji: "\u{1F35E}",
+      name: "Sides",
+      emoji: "\u{1F372}",
       color: "#FFB300",
       highlight: "#FFCA28",
       face: { bg: "#FFB300", skin: "#FFE082", eyes: "#E65100", blush: "#FFF8E1" },
-      items: ["Bread", "Rice", "Pasta", "Oatmeal", "Cereal", "Tortillas", "Pancakes", "Crackers"],
+      items: ["Mashed Potatoes", "Rice", "Mac & Cheese", "Coleslaw", "Cornbread", "Baked Beans", "Dinner Rolls", "Applesauce", "Potato Salad", "Garlic Bread"],
     },
     {
       name: "Drinks",
