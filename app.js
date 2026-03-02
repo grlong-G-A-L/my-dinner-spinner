@@ -109,59 +109,108 @@ window.onerror = function(msg, src, line, col, err) {
   // ── Sound (Web Audio, fully guarded) ─────────────────────────────
   const AudioCtx = window.AudioContext || window.webkitAudioContext;
   let audioCtx = null;
+  var xyloWave = null;
+  var chimeWave = null;
 
   function ensureAudio() {
     try {
       if (!AudioCtx) return false;
-      if (!audioCtx) audioCtx = new AudioCtx();
+      if (!audioCtx) {
+        audioCtx = new AudioCtx();
+        var real = new Float32Array([0, 1, 0.6, 0.2, 0.15, 0.1, 0.05, 0.02]);
+        var imag = new Float32Array(real.length);
+        xyloWave = audioCtx.createPeriodicWave(real, imag);
+        var chimeReal = new Float32Array([0, 1, 0.4, 0.3, 0.1, 0.08, 0.15, 0.05, 0.03]);
+        var chimeImag = new Float32Array(chimeReal.length);
+        chimeWave = audioCtx.createPeriodicWave(chimeReal, chimeImag);
+      }
       if (audioCtx.state === "suspended") audioCtx.resume();
       return true;
     } catch (_) { return false; }
   }
 
+  function xyloNote(freq, startTime, duration, vol) {
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.setPeriodicWave(xyloWave);
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, startTime);
+    gain.gain.exponentialRampToValueAtTime(vol * 0.4, startTime + duration * 0.15);
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(startTime);
+    osc.stop(startTime + duration);
+  }
+
+  function chimeNote(freq, startTime, duration, vol) {
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.setPeriodicWave(chimeWave);
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(vol, startTime);
+    gain.gain.exponentialRampToValueAtTime(vol * 0.5, startTime + duration * 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(startTime);
+    osc.stop(startTime + duration);
+  }
+
   function playTick() {
     try {
       if (!ensureAudio()) return;
-      var osc = audioCtx.createOscillator();
-      var gain = audioCtx.createGain();
-      osc.connect(gain); gain.connect(audioCtx.destination);
-      osc.type = "sine"; osc.frequency.value = 1200;
-      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
-      osc.start(); osc.stop(audioCtx.currentTime + 0.06);
+      var t = audioCtx.currentTime;
+      var freq = 800 + Math.random() * 400;
+      xyloNote(freq, t, 0.08, 0.09);
     } catch (_) {}
   }
 
   function playWhoosh() {
     try {
       if (!ensureAudio()) return;
-      var len = audioCtx.sampleRate * 0.25;
+      var t = audioCtx.currentTime;
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.setPeriodicWave(xyloWave);
+      osc.frequency.setValueAtTime(300, t);
+      osc.frequency.exponentialRampToValueAtTime(1200, t + 0.18);
+      osc.frequency.exponentialRampToValueAtTime(800, t + 0.3);
+      gain.gain.setValueAtTime(0.001, t);
+      gain.gain.linearRampToValueAtTime(0.12, t + 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(t);
+      osc.stop(t + 0.3);
+
+      var len = audioCtx.sampleRate * 0.2;
       var buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
       var d = buf.getChannelData(0);
-      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
-      var src = audioCtx.createBufferSource(); src.buffer = buf;
-      var gain = audioCtx.createGain();
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2);
+      var src = audioCtx.createBufferSource();
+      src.buffer = buf;
+      var ng = audioCtx.createGain();
       var filt = audioCtx.createBiquadFilter();
-      filt.type = "bandpass"; filt.frequency.value = 600; filt.Q.value = 0.5;
-      src.connect(filt); filt.connect(gain); gain.connect(audioCtx.destination);
-      gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-      src.start();
+      filt.type = "highpass";
+      filt.frequency.value = 2000;
+      src.connect(filt);
+      filt.connect(ng);
+      ng.connect(audioCtx.destination);
+      ng.gain.setValueAtTime(0.06, t);
+      ng.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+      src.start(t);
     } catch (_) {}
   }
 
   function playFanfare() {
     try {
       if (!ensureAudio()) return;
-      [523.25, 659.25, 783.99, 1046.5].forEach(function(freq, i) {
-        var osc = audioCtx.createOscillator();
-        var gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.type = "triangle"; osc.frequency.value = freq;
-        var t = audioCtx.currentTime + i * 0.12;
-        gain.gain.setValueAtTime(0.18, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-        osc.start(t); osc.stop(t + 0.35);
+      var t = audioCtx.currentTime;
+      var notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+      notes.forEach(function(freq, i) {
+        xyloNote(freq, t + i * 0.1, 0.45, 0.13);
+        if (i >= 3) chimeNote(freq * 2, t + i * 0.1 + 0.02, 0.6, 0.04);
       });
     } catch (_) {}
   }
@@ -169,16 +218,23 @@ window.onerror = function(msg, src, line, col, err) {
   function playSuperFanfare() {
     try {
       if (!ensureAudio()) return;
-      [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1318.5].forEach(function(freq, i) {
-        var osc = audioCtx.createOscillator();
-        var gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.type = "triangle"; osc.frequency.value = freq;
-        var t = audioCtx.currentTime + i * 0.1;
-        gain.gain.setValueAtTime(0.2, t);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-        osc.start(t); osc.stop(t + 0.4);
+      var t = audioCtx.currentTime;
+      var notes = [523.25, 587.33, 659.25, 783.99, 880, 1046.5, 1318.5, 1568];
+      notes.forEach(function(freq, i) {
+        xyloNote(freq, t + i * 0.09, 0.5, 0.14);
+        chimeNote(freq * 2, t + i * 0.09 + 0.02, 0.7, 0.04);
       });
+      chimeNote(2093, t + notes.length * 0.09, 1.0, 0.06);
+    } catch (_) {}
+  }
+
+  function playStarChime() {
+    try {
+      if (!ensureAudio()) return;
+      var t = audioCtx.currentTime;
+      chimeNote(1318.5, t, 0.4, 0.1);
+      chimeNote(1568, t + 0.08, 0.5, 0.1);
+      xyloNote(2093, t + 0.16, 0.35, 0.07);
     } catch (_) {}
   }
 
@@ -484,6 +540,7 @@ window.onerror = function(msg, src, line, col, err) {
     stars += count;
     localStorage.setItem("dinnerSpinnerStars", stars);
     starCountEl.textContent = stars;
+    playStarChime();
     starBarEl.classList.remove("pop");
     void starBarEl.offsetWidth;
     starBarEl.classList.add("pop");
