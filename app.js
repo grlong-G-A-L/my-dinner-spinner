@@ -492,6 +492,16 @@ window.onerror = function(msg, src, line, col, err) {
     }
   }
 
+  document.getElementById("starReset").addEventListener("click", function(e) {
+    e.stopPropagation();
+    if (stars === 0) return;
+    if (confirm("Reset all your stars back to 0?")) {
+      stars = 0;
+      localStorage.setItem("dinnerSpinnerStars", 0);
+      starCountEl.textContent = 0;
+    }
+  });
+
   ateItBtn.addEventListener("click", function() {
     addStar(1);
     closeModal();
