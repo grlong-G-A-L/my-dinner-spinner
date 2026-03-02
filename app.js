@@ -28,7 +28,7 @@ window.onerror = function(msg, src, line, col, err) {
     },
     {
       name: "Dairy",
-      emoji: "\u{1F95B}",
+      emoji: "\u{1F9C0}",
       color: "#00ACC1",
       highlight: "#26C6DA",
       face: { bg: "#00ACC1", skin: "#80DEEA", eyes: "#006064", blush: "#B2EBF2" },
@@ -52,7 +52,7 @@ window.onerror = function(msg, src, line, col, err) {
     },
     {
       name: "Drinks",
-      emoji: "\u{1F4A7}",
+      emoji: "\u{1F95B}",
       color: "#1E88E5",
       highlight: "#42A5F5",
       face: { bg: "#1E88E5", skin: "#90CAF9", eyes: "#0D47A1", blush: "#BBDEFB" },
