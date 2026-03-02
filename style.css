@@ -279,253 +279,45 @@ body {
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
-  width: 62px;
+  width: 80px;
 }
 
-.mascot-chef {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.mascot-svg {
+  width: 80px;
+  height: auto;
   transition: transform 0.3s;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));
 }
 
-.mascot.excited .mascot-chef {
+.mascot.excited .mascot-svg {
   animation: mascotBounce 0.5s ease infinite alternate;
 }
 
-.mascot.cheering .mascot-chef {
+.mascot.cheering .mascot-svg {
   animation: mascotCheer 0.3s ease 3;
 }
 
-.toque {
-  position: relative;
-  width: 52px;
-  height: 30px;
-  z-index: 2;
-  margin-bottom: -6px;
+/* Eye states */
+.eye-squint { display: none; }
+.mascot.excited .eye-open { display: none; }
+.mascot.excited .eye-squint { display: block; }
+
+/* Mouth states */
+.mouth-wide { display: none; }
+.mascot.excited .mouth-normal { display: none; }
+.mascot.excited .mouth-wide { display: block; }
+.mascot.cheering .mouth-normal { display: none; }
+.mascot.cheering .mouth-wide { display: block; }
+
+/* Arm wave on cheering */
+.mascot.cheering .chef-svg-arm-r {
+  animation: svgArmWave 0.4s ease 3;
+  transform-origin: 82px 100px;
 }
 
-.toque-puff {
-  position: absolute;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-.toque-puff.p1 { width: 24px; height: 24px; left: 2px; top: 0; }
-.toque-puff.p2 { width: 28px; height: 26px; left: 12px; top: -6px; }
-.toque-puff.p3 { width: 24px; height: 24px; right: 2px; top: 0; }
-
-.toque-band {
-  position: absolute;
-  bottom: 0;
-  left: 2px;
-  right: 2px;
-  height: 10px;
-  background: #fff;
-  border-radius: 0 0 3px 3px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
-}
-
-.chef-head {
-  position: relative;
-  width: 50px;
-  height: 46px;
-  background: linear-gradient(165deg, #FFCC80, #FFB74D);
-  border-radius: 50% 50% 48% 48%;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: visible;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.chef-brows { display: flex; gap: 16px; margin-top: 8px; }
-
-.chef-brow {
-  display: block;
-  width: 10px;
-  height: 4px;
-  background: #5D4037;
-  border-radius: 3px;
-  transition: transform 0.2s;
-}
-
-.mascot.excited .chef-brow.left { transform: rotate(-12deg) translateY(-2px); }
-.mascot.excited .chef-brow.right { transform: rotate(12deg) translateY(-2px); }
-.mascot.cheering .chef-brow.left { transform: rotate(-15deg) translateY(-3px); }
-.mascot.cheering .chef-brow.right { transform: rotate(15deg) translateY(-3px); }
-
-.chef-eyes { display: flex; gap: 12px; margin-top: 2px; }
-
-.chef-eye {
-  position: relative;
-  display: block;
-  width: 12px;
-  height: 12px;
-  background: #fff;
-  border-radius: 50%;
-  border: 1.5px solid #5D4037;
-  overflow: hidden;
-  transition: all 0.2s;
-}
-
-.chef-pupil {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background: #3E2723;
-  border-radius: 50%;
-  bottom: 1px;
-  left: 50%;
-  transform: translateX(-50%);
-  transition: all 0.2s;
-}
-
-.chef-shine {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: #fff;
-  border-radius: 50%;
-  top: 2px;
-  right: 2px;
-}
-
-.mascot.excited .chef-eye {
-  height: 6px;
-  border-radius: 6px 6px 0 0;
-  border-bottom: 2px solid #5D4037;
-}
-
-.mascot.excited .chef-pupil { display: none; }
-.mascot.excited .chef-shine { display: none; }
-
-.mascot.cheering .chef-pupil { width: 5px; height: 5px; bottom: 2px; }
-
-.chef-nose {
-  width: 7px;
-  height: 5px;
-  background: #FFAB91;
-  border-radius: 50%;
-  margin-top: 1px;
-}
-
-.chef-cheeks {
-  position: absolute;
-  width: 100%;
-  top: 26px;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 3px;
-  pointer-events: none;
-}
-
-.chef-cheek {
-  display: block;
-  width: 10px;
-  height: 7px;
-  background: #FF8A80;
-  border-radius: 50%;
-  opacity: 0.5;
-}
-
-.mascot.excited .chef-cheek,
-.mascot.cheering .chef-cheek { opacity: 0.7; }
-
-.chef-mouth {
-  position: relative;
-  width: 14px;
-  height: 7px;
-  background: #D84315;
-  border-radius: 0 0 10px 10px;
-  margin-top: 0;
-  overflow: hidden;
-  transition: all 0.2s;
-}
-
-.chef-tongue {
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 5px;
-  background: #FF7043;
-  border-radius: 50% 50% 0 0;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.mascot.excited .chef-mouth { width: 16px; height: 9px; }
-.mascot.excited .chef-tongue,
-.mascot.cheering .chef-tongue { opacity: 1; }
-.mascot.cheering .chef-mouth { width: 18px; height: 10px; }
-
-.chef-body {
-  position: relative;
-  width: 40px;
-  height: 22px;
-  background: #fff;
-  border-radius: 4px 4px 12px 12px;
-  margin-top: -2px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.chef-collar {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 14px;
-  height: 6px;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-top: 6px solid #E8E8E8;
-}
-
-.chef-button {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 5px;
-  height: 5px;
-  background: #BDBDBD;
-  border-radius: 50%;
-}
-
-.chef-button.b1 { top: 8px; }
-.chef-button.b2 { top: 15px; }
-
-.chef-arm {
-  position: absolute;
-  width: 10px;
-  height: 16px;
-  background: #fff;
-  border-radius: 5px;
-  top: 2px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  transition: transform 0.3s;
-}
-
-.chef-arm.left-arm { left: -7px; transform: rotate(8deg); }
-.chef-arm.right-arm { right: -7px; transform: rotate(-8deg); }
-
-.mascot.excited .chef-arm.left-arm { transform: rotate(-15deg) translateY(-3px); }
-.mascot.excited .chef-arm.right-arm { transform: rotate(15deg) translateY(-3px); }
-.mascot.cheering .chef-arm.left-arm { animation: armWaveLeft 0.4s ease 3; }
-.mascot.cheering .chef-arm.right-arm { animation: armWaveRight 0.4s ease 3; }
-
-@keyframes armWaveLeft {
-  0%, 100% { transform: rotate(8deg); }
-  50% { transform: rotate(-30deg) translateY(-5px); }
-}
-
-@keyframes armWaveRight {
-  0%, 100% { transform: rotate(-8deg); }
-  50% { transform: rotate(30deg) translateY(-5px); }
+@keyframes svgArmWave {
+  0%, 100% { transform: rotate(0); }
+  50% { transform: rotate(-20deg); }
 }
 
 .mascot-label {
@@ -705,39 +497,10 @@ body {
 
 /* ---- Mini Chef (modal) ---- */
 
-.mini-chef { display: flex; flex-direction: column; align-items: center; }
-
-.mini-toque {
-  position: relative;
-  width: 58px;
-  height: 34px;
-  z-index: 2;
-  margin-bottom: -8px;
-}
-
-.mini-chef-head {
-  position: relative;
-  width: 56px;
-  height: 52px;
-  background: linear-gradient(165deg, #FFCC80, #FFB74D);
-  border-radius: 50% 50% 48% 48%;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.mini-chef-head .chef-eyes { margin-top: 10px; }
-
-.mini-chef-cheeks {
-  position: absolute;
-  width: 100%;
-  top: 30px;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 4px;
-  pointer-events: none;
+.mini-chef-svg {
+  width: 70px;
+  height: auto;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
 }
 
 .modal-title {
