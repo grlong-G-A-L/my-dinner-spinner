@@ -99,12 +99,10 @@ body {
   text-align: center;
 }
 
-/* ---- Wheel Row (mascot + wheel side-by-side) ---- */
+/* ---- Wheel Row ---- */
 
 .wheel-row {
   display: flex;
-  align-items: center;
-  gap: 6px;
   width: 100%;
   justify-content: center;
 }
@@ -116,7 +114,7 @@ body {
   flex-direction: column;
   align-items: center;
   flex-shrink: 0;
-  width: 72px;
+  width: 62px;
 }
 
 .mascot-chef {
@@ -525,10 +523,19 @@ body {
   cursor: not-allowed;
 }
 
+/* ---- Bottom Row (mascot + challenge button) ---- */
+
+.bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
 /* ---- Mode Buttons ---- */
 
 .mode-buttons {
-  margin-top: 12px;
   display: flex;
   gap: 10px;
 }
@@ -894,26 +901,19 @@ body {
 }
 
 @media (max-width: 380px) {
-  .mascot { width: 58px; }
-  .toque { width: 42px; height: 24px; }
-  .toque-puff.p1 { width: 20px; height: 20px; }
-  .toque-puff.p2 { width: 22px; height: 20px; }
-  .toque-puff.p3 { width: 20px; height: 20px; }
-  .chef-head { width: 40px; height: 38px; }
-  .chef-body { width: 32px; height: 18px; }
   .wheel-container {
     width: min(65vw, 280px);
     height: min(65vw, 280px);
   }
+  .bottom-row { gap: 10px; }
 }
 
 @media (max-height: 620px) {
   .title { font-size: 1.4rem; }
   .subtitle { font-size: 0.75rem; margin-bottom: 2px; }
-  .mascot { width: 58px; }
-  .chef-head { width: 40px; height: 38px; }
   .wheel-container {
     width: min(60vw, 260px);
     height: min(60vw, 260px);
   }
+  .bottom-row { margin-top: 8px; }
 }
